@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // import SessionProvider from './component/SessionProviderComponent/SessionProvider';
 import Login from './components/LoginComponent/Login.jsx';
+import Register from './components/RegisterComponent/Register.jsx';
+import Auth from './components/Auth Component/Auth.jsx';
 
 function App() {
   return (
@@ -11,10 +13,9 @@ function App() {
         {/* <NavBar/> */}
         {/* <NavBar currentPage="login" /> */}
           <Routes>
-              {/* //http://localhost:8080 agar url /home-page hai to ye component hit hoga
-              <Route path='/home-page' element = { <HomePage /> }></Route> */}
-              //http://localhost:8080 agar url /login to ye component hit hoga
               <Route path='/login' element={ <Login/> }></Route>
+              <Route path='/register' element={ <Register/> }></Route>
+              <Route path='/' element={ <Auth/> }></Route>
               {/* //http://localhost:8080 agar url / to ye component hit hoga
               <Route path='/' element={ <LoginPage/> }></Route>
               //http://localhost:8080 agar url /register to ye component hit hoga
