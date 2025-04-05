@@ -1,6 +1,9 @@
+from rest_framework_simplejwt.serializers import TokenVerifySerializer
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenVerifyView
 from rest_framework import status
 from accounts.models import User
 from django.core.validators import validate_email
@@ -14,6 +17,38 @@ import logging
 logger = logging.getLogger('django')
 
 # Create your views here.
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def verify_token(request):
+    """
+    Custom JWT token verification with enhanced response.
+    """
+    serializer = TokenVerifySerializer(data=request.data)
+
+    try:
+        serializer.is_valid(raise_exception=True)
+
+        # Optional: decode the token to get user info
+        from rest_framework_simplejwt.tokens import AccessToken
+        token_obj = AccessToken(request.data["token"])
+        user_id = token_obj["user_id"]
+        exp = token_obj["exp"]
+
+        return Response({
+            "valid": True,
+            "message": "Token is valid",
+            "user_id": user_id,
+            "expires_at": exp,
+        }, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({
+            "valid": False,
+            "message": "Token is not valid",
+            "error": str(e)
+        }, status=status.HTTP_401_UNAUTHORIZED)
+
 
 @api_view(['POST'])
 def login_view(request):
@@ -31,9 +66,6 @@ def login_view(request):
 
     logger.info(f"Login attempt with email/phone: {email_or_phone}")
     logger.info(f"Login attempt with password: {password}")
-
-    # Check if the user exists with email or phone
-    # user = list(User.objects.filter(email=email_or_phone))[:1] or list(User.objects.filter(phone=email_or_phone))[:1]
     
     user = User.objects.filter(email=email_or_phone).first() or User.objects.filter(phone=email_or_phone).first()
 

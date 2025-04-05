@@ -167,3 +167,13 @@ LOGGING = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # frontend's URL
 ]
+
+# JWT settings
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+}

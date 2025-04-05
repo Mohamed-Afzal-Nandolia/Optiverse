@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { FaUser, FaEnvelope, FaLock, FaPhone, FaEye, FaEyeSlash } from "react-icons/fa";
 import { registerUser, loginUser } from "../../services/Api";
 import { useNavigate } from "react-router-dom";
+import { Loading } from "../Loader Component/Loading";
 
 const Auth = () => {
   const [isRegister, setIsRegister] = useState(false);
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -13,6 +14,7 @@ const Auth = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [currentImage, setCurrentImage] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const images = [
@@ -21,6 +23,18 @@ const Auth = () => {
     "/assets/background/image3.jpg",
   ];
 
+  useEffect(() => {
+    console.log("🔁 useEffect ran");
+    const token = localStorage.getItem("token");
+    console.log("📦 Token from localStorage:", token);
+  
+    if (token) {
+      navigate("/homepage");
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prevImage) => (prevImage + 1) % images.length);
@@ -32,28 +46,41 @@ const Auth = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleAuth = (e) => {
+  const handleAuth = async (e) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
+    setIsLoading(true);
+  
     if (isRegister) {
-      registerUser({ name, email, phone, password })
-        .then(() => {
+      registerUser({ username, email, phone, password })
+        .then((response) => {
+          console.log(response);
+          localStorage.setItem("token", response.data.token);
           setSuccess("Registration successful! Redirecting to login...");
-          setTimeout(() => setIsRegister(false), 2000);
+          setTimeout(() => {
+            setIsRegister(false);
+            navigate("/homepage");
+          }, 1000);
         })
         .catch((error) => {
           setError(error.response?.data?.message || "Registration failed. Please try again.");
+          setIsLoading(false);
         });
     } else {
       loginUser({ email_or_phone: email, password })
         .then((response) => {
-          sessionStorage.setItem("token", response.data.token);
-          navigate("/home-page");
+          localStorage.setItem("token", response.data.token);
+          navigate("/homepage");
         })
-        .catch(() => {
+        .catch((error) => {
           setError("Email or Password is incorrect");
+          setIsLoading(false);
         });
     }
   };
+
+  if (isLoading) return <Loading />;
 
   return (
     <div
@@ -90,10 +117,10 @@ const Auth = () => {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Full Name"
+                  placeholder="Username"
                   required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   className="peer w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#001B3A]"
                 />
                 <FaUser className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500" />

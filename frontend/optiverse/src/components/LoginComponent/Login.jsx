@@ -26,9 +26,9 @@ const Login = () => {
     return () => clearInterval(interval);
   }, [images.length]);
 
-  // Check sessionStorage on component load
+  // Check localStorage on component load
   useEffect(() => {
-    if (sessionStorage.getItem("token")) {
+    if (localStorage.getItem("token")) {
       navigate("/home-page"); // Redirect if already logged in
     }
   }, [navigate]);
@@ -49,7 +49,7 @@ const Login = () => {
 
     loginUser(LoginDetails)
       .then((response) => {
-        sessionStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", response.data.token);
         navigate("/home-page");
       })
       .catch((error) => {
