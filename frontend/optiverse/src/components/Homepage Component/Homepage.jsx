@@ -6,8 +6,8 @@ import Feed from "../Homepage Component/Feed";
 
 const Homepage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#001C3D] to-[#1e293b] text-white">
-      <div className="border-b border-gray-700 py-9">
+    <div className="min-h-screen bg-gradient-to-r from-[#001C3D]  text-white">
+      <div className="border-b border-gray-700 py-8">
         <Navbar />
       </div>
       <div className="grid grid-cols-12 gap-4">
