@@ -24,9 +24,7 @@ const Auth = () => {
   ];
 
   useEffect(() => {
-    console.log("🔁 useEffect ran");
     const token = localStorage.getItem("token");
-    console.log("📦 Token from localStorage:", token);
   
     if (token) {
       navigate("/homepage");

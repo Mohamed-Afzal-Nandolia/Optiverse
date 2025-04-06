@@ -1,23 +1,31 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// Homepage.jsx
+import React from "react";
+import Navbar from "../Homepage Component/NavBar";
+import Sidebar from "../Homepage Component/Sidebar";
+import Feed from "../Homepage Component/Feed";
 
 const Homepage = () => {
-  const navigate = useNavigate();
-  const signout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
-  }
-
   return (
-    <div className="h-screen flex items-center justify-center" style={{ backgroundColor: '#001C3D' }}>
-      <h1 className="text-white text-4xl font-bold">Home Page</h1>
-      <button 
-        type="button"
-        onClick={signout} 
-        className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-300"
-        >
-        Signout
-      </button>
+    <div className="min-h-screen bg-gradient-to-r from-[#001C3D] to-[#1e293b] text-white">
+      <div className="border-b border-gray-700 py-9">
+        <Navbar />
+      </div>
+      <div className="grid grid-cols-12 gap-4">
+        {/* Left Sidebar */}
+        <div className="col-span-3 border-r border-gray-700 min-h-[calc(100vh-3.5rem)]">
+          <Sidebar />
+        </div>
+
+        {/* Feed Section */}
+        <div className="col-span-6 px-15 py-6">
+          <Feed />
+        </div>
+
+        {/* Right Sidebar Placeholder */}
+        <div className="col-span-3 border-l border-gray-700 min-h-[calc(100vh-3.5rem)]">
+          <div className="p-4">Right Sidebar (Coming Soon)</div>
+        </div>
+      </div>
     </div>
   );
 };
