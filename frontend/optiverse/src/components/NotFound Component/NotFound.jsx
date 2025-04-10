@@ -35,7 +35,7 @@ class NotFound extends Component {
     }
 
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 px-6 transition duration-300">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-#001C3D text-gray-800 dark:text-gray-200 px-6 transition duration-300">
         <h1 className="text-9xl font-extrabold tracking-widest text-white-600 dark:text-white">
           404
         </h1>

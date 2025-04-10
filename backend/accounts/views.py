@@ -74,6 +74,7 @@ def login_view(request):
 
     if user and user.check_password(password):
         refresh = RefreshToken.for_user(user)
+        refresh.payload['username'] = user.username
         return Response({
             "message": "Login Successful",
             "token": str(refresh.access_token),
@@ -143,6 +144,7 @@ def register_view(request):
 
     # Generate JWT
     refresh = RefreshToken.for_user(user)
+    refresh.payload['username'] = user.username
     
     return Response({
         "message": "Registration successful",

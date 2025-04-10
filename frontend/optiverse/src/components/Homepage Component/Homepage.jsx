@@ -1,14 +1,21 @@
 // Homepage.jsx
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../Homepage Component/NavBar";
 import Sidebar from "../Homepage Component/Sidebar";
 import Feed from "../Homepage Component/Feed";
+import MyProfile from "./MyProfile Component/MyProfile";
 
 const Homepage = () => {
+  const [showProfile, setShowProfile] = useState(false);
+
+  const handleProfileToggle = () => {
+    setShowProfile((prev) => !prev);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#001C3D]  text-white">
+    <div className="min-h-screen bg-gradient-to-r from-[#001C3D] text-white">
       <div className="border-b border-gray-700 py-8">
-        <Navbar />
+        <Navbar onProfileClick={handleProfileToggle} />
       </div>
       <div className="grid grid-cols-12 gap-4">
         {/* Left Sidebar */}
@@ -18,7 +25,7 @@ const Homepage = () => {
 
         {/* Feed Section */}
         <div className="col-span-6 px-15 py-6">
-          <Feed />
+          {showProfile ? <MyProfile /> : <Feed />}
         </div>
 
         {/* Right Sidebar Placeholder */}

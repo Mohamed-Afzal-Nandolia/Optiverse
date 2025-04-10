@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { FiImage, FiSmile, FiSend } from "react-icons/fi";
-// import 'emoji-mart/css/emoji-mart.css';
 
 const PostCard = () => {
   const [postContent, setPostContent] = useState("");
@@ -8,7 +7,7 @@ const PostCard = () => {
   const handlePost = () => {
     if (postContent.trim()) {
       console.log("Posted:", postContent);
-      setPostContent(""); // clear after posting
+      setPostContent("");
     }
   };
 
@@ -30,7 +29,7 @@ const PostCard = () => {
       <div className="flex items-center justify-between">
         {/* Icons */}
         <div className="flex gap-4 text-gray-400">
-          <button className="hover:text-blue-400 transition">
+          {/* <button className="hover:text-blue-400 transition">
             <FiImage size={20} />
           </button>
           <button
@@ -38,7 +37,7 @@ const PostCard = () => {
             className="hover:text-yellow-400 transition"
           >
             <FiSmile size={20} />
-          </button>
+          </button> */}
         </div>
 
         {/* Post Button */}

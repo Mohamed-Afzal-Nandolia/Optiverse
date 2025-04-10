@@ -1,26 +1,25 @@
 import React from "react";
-import MyProfile from "./MyProfile";
+import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import logo from "/assets/logos/Optiverse.png";
 
-const Navbar = () => {
+const Navbar = ({onProfileClick}) => {
   return (
     <nav className="fixed top-0 w-full text-white shadow-md z-50">
       <div className="max-w-screen-xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo + Brand Name */}
         <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition">
           <img src={logo} alt="OptiVerse Logo" className="w-10 h-10 object-contain" />
-          <span className="text-2xl font-bold">OptiVerse</span>
+          <span className="text-2xl font-bold">Optiverse</span>
         </Link>
 
         {/* Navigation Links */}
         <ul className="flex gap-8 text-lg font-medium">
-          <li className="hover:text-blue-400 cursor-pointer">Home</li>
+        <Link to="/"><li className="hover:text-blue-400 cursor-pointer">Home</li></Link>
           <li className="hover:text-blue-400 cursor-pointer">Topics</li>
           <li className="hover:text-blue-400 cursor-pointer">Your Posts</li>
           <li className="hover:text-blue-400 cursor-pointer">Messages</li>
           <li className="hover:text-blue-400 cursor-pointer">Notifications</li>
-          {/* <li className="hover:text-blue-400 cursor-pointer">Search</li> */}
         </ul>
             {/* Search Bar */}
             <div className="relative">
@@ -32,7 +31,7 @@ const Navbar = () => {
             </div>
         {/* Profile Dropdown */}
         <div className="text-lg hover:text-blue-400 cursor-pointer">
-          <MyProfile />
+          <Profile onProfileClick={onProfileClick} />
         </div>
       </div>
     </nav>
