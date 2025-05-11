@@ -13,14 +13,14 @@ const PrivateRoute = ({ children }) => {
         navigate("/");
         return;
       }
-  
-      try {
-        const response = await verifyToken(token);
-        setIsChecking(false);
-      } catch (err) {
-        localStorage.removeItem("token");
-        navigate("/");
-      }
+      setIsChecking(false);
+      // try {
+      //   const response = await verifyToken(token);
+      //   setIsChecking(false);
+      // } catch (err) {
+      //   localStorage.removeItem("token");
+      //   navigate("/");
+      // }
     };
   
     checkAuth();
