@@ -6,10 +6,10 @@ import { Loading } from "../Loader Component/Loading";
 
 const Auth = () => {
   const [isRegister, setIsRegister] = useState(false);
-  const [u_uname, setU_uname] = useState("");
-  const [u_email, setU_email] = useState("");
-  const [u_phone, setU_phone] = useState("");
-  const [u_pass, setU_password] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -51,7 +51,11 @@ const Auth = () => {
     setIsLoading(true);
   
     if (isRegister) {
-      registerUser({ u_uname, u_email, u_phone, u_pass })
+      console.log("username: ", username)
+      console.log("email: ", email)
+      console.log("phone: ", phone)
+      console.log("password: ", password)
+      registerUser({ username, email, phone, password })
         .then((response) => {
           console.log(response);
           localStorage.setItem("token", response.data.token);
@@ -66,7 +70,7 @@ const Auth = () => {
           setIsLoading(false);
         });
     } else {
-      loginUser({ u_email, u_pass })
+      loginUser({ email, password })
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           navigate("/homepage");
@@ -117,8 +121,8 @@ const Auth = () => {
                   type="text"
                   placeholder="Username"
                   required
-                  value={u_uname}
-                  onChange={(e) => setU_uname(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   className="peer w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#001B3A]"
                 />
                 <FaUser className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500" />
@@ -130,8 +134,8 @@ const Auth = () => {
                 type="email"
                 placeholder="Email"
                 required
-                value={u_email}
-                onChange={(e) => setU_email(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="peer w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#001B3A]"
               />
               <FaEnvelope className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500" />
@@ -143,8 +147,8 @@ const Auth = () => {
                   type="tel"
                   placeholder="Phone Number"
                   required
-                  value={u_phone}
-                  onChange={(e) => setU_phone(e.target.value)}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   className="peer w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#001B3A]"
                 />
                 <FaPhone className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500" />
@@ -156,8 +160,8 @@ const Auth = () => {
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 required
-                value={u_pass}
-                onChange={(e) => setU_password(e.target.value)}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="peer w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#001B3A]"
               />
               <button
