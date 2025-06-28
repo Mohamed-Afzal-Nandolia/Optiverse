@@ -73,6 +73,9 @@ const Auth = () => {
       loginUser({ email, password })
         .then((response) => {
           localStorage.setItem("token", response.data.token);
+          localStorage.setItem("username", response.data.user.username);
+          localStorage.setItem("user", response.data.user.id);
+          localStorage.setItem("email", response.data.user.email);
           navigate("/homepage");
         })
         .catch((error) => {

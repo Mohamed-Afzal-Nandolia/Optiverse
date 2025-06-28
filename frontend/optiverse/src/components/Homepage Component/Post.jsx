@@ -1,4 +1,3 @@
-// Post.jsx
 import React from "react";
 
 const Post = ({ community, content, time }) => {

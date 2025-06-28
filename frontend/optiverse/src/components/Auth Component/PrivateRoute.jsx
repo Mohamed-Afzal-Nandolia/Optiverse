@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { verifyToken } from "../../services/Api";
+// import { verifyToken } from "../../services/Api";
 
 const PrivateRoute = ({ children }) => {
   const navigate = useNavigate();

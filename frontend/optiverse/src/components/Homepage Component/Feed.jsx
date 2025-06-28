@@ -1,26 +1,39 @@
-import React from "react";
-import PostBox from "../Homepage Component/PostCard";
-import Post from "../Homepage Component/Post";
+import React, { useEffect, useState } from "react";
+import { getAllPost } from "../../services/Api";
+import Post from "./Post";
+import PostCard from "./PostCard";
 
 const Feed = () => {
+  const [posts, setPosts] = useState([]);
+  const user = localStorage.getItem("user");
+
+  const fetchPosts = () => {
+    if (user) {
+      getAllPost(user)
+        .then((response) => {
+          setPosts(response.data);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch posts:", error.response?.data || error.message);
+        });
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, [user]);
+
   return (
-    <div className="space-y-6">
-      <PostBox />
-      <Post
-        community="O/PositiveAffirmation"
-        content="You’re doing your best and that’s enough. 🌟"
-        time="2 hours ago"
-      />
-      <Post
-        community="O/InspiringStories"
-        content="A stranger paid my college tuition. Still gives me chills!"
-        time="4 hours ago"
-      />
-      <Post
-        community="O/SelfImprovementAndGrowth"
-        content="Started journaling daily. 10 days in, and already noticing clarity. ✨"
-        time="Yesterday"
-      />
+    <div className="space-y-4">
+      <PostCard onPostCreated={fetchPosts} />
+      {posts.map((post) => (
+        <Post
+          key={post.id}
+          community={`User ${post.user}`}
+          content={post.post}
+          time={new Date(post.date).toLocaleString()}
+        />
+      ))}
     </div>
   );
 };
