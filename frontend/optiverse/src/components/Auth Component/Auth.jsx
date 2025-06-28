@@ -51,6 +51,10 @@ const Auth = () => {
     setIsLoading(true);
   
     if (isRegister) {
+      console.log("username: ", username)
+      console.log("email: ", email)
+      console.log("phone: ", phone)
+      console.log("password: ", password)
       registerUser({ username, email, phone, password })
         .then((response) => {
           console.log(response);
@@ -66,9 +70,12 @@ const Auth = () => {
           setIsLoading(false);
         });
     } else {
-      loginUser({ email_or_phone: email, password })
+      loginUser({ email, password })
         .then((response) => {
           localStorage.setItem("token", response.data.token);
+          localStorage.setItem("username", response.data.user.username);
+          localStorage.setItem("user", response.data.user.id);
+          localStorage.setItem("email", response.data.user.email);
           navigate("/homepage");
         })
         .catch((error) => {

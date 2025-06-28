@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { verifyToken } from "../../services/Api";
+// import { verifyToken } from "../../services/Api";
 
 const PrivateRoute = ({ children }) => {
   const navigate = useNavigate();
@@ -13,14 +13,14 @@ const PrivateRoute = ({ children }) => {
         navigate("/");
         return;
       }
-  
-      try {
-        const response = await verifyToken(token);
-        setIsChecking(false);
-      } catch (err) {
-        localStorage.removeItem("token");
-        navigate("/");
-      }
+      setIsChecking(false);
+      // try {
+      //   const response = await verifyToken(token);
+      //   setIsChecking(false);
+      // } catch (err) {
+      //   localStorage.removeItem("token");
+      //   navigate("/");
+      // }
     };
   
     checkAuth();

@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDecodedToken } from "../../utils/useDecodedToken";
+// import { useDecodedToken } from "../../utils/useDecodedToken";
 
 const Profile = ({ onProfileClick }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-  const username = useDecodedToken();
+  // const username = useDecodedToken();
+  const username = localStorage.getItem("username")
   const [isProfile, setIsProfile] = useState(true);
   
   const handleToggle = () => setOpen((prev) => !prev);
@@ -23,6 +24,9 @@ const Profile = ({ onProfileClick }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("username");
+    localStorage.removeItem("user");
     navigate("/");
   };
 
