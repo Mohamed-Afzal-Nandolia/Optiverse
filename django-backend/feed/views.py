@@ -5,6 +5,8 @@ from django.contrib.auth import get_user_model
 from feed.models import Posts
 from feed.serializers import PostSerializer
 import logging
+import json
+from optiverse.utility import apply_filters
 
 logger = logging.getLogger('django')
 User = get_user_model()
@@ -47,7 +49,6 @@ def get_all_post(request):
     logger.info("feed/views/get_all_post <<Fetching all the post>>")
     
     try:
-        logger.info(f"request :: {request.query_params}")
         user_id = request.query_params.get('user')
         if not user_id:
             return Response({"error": "User ID is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -56,10 +57,61 @@ def get_all_post(request):
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        filters_raw = request.query_params.get('filters')
+
+        try:
+            filters = json.loads(filters_raw) if filters_raw else []
+        except json.JSONDecodeError:
+            logger.info(f"feed/views/get_all_post <<Exception Occured in Filters>>")
+            filters = []
+
+        posts = Posts.objects.all()
+
+        # for filter in filters:
+        #     if len(filter) != 3:
+        #         continue
+
+        #     field, operator, value = filter
+
+        #     lookup = ""
+        #     if operator == "like":
+        #         lookup = f"{field}__icontains"
+        #     elif operator == "=":
+        #         lookup = f"{field}"
+        #     else:
+        #         continue
+
+        #     posts = posts.filter(**{lookup: value})
+
+        posts = apply_filters(posts, filters, logger)
+
+        posts = posts.order_by('-date')
         
-        posts = Posts.objects.all().order_by('-date')  # You can order by latest if needed
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         logger.error(f"Error fetching posts: {str(e)}")
+        return Response({"error": "Something went wrong"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_my_post(request):
+    logger.info(f"feed/views/get_all_post <<Fetch all Post with id: {request.query_params.get('user')}>>")
+
+    try:
+        user_id = request.query_params.get('user')
+        if not user_id:
+            return Response({"error": "User ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        posts = Posts.objects.filter(user=user_id)
+        serializer = PostSerializer(posts, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        logger.info(f"Error fetch posts: {str(e)}")
         return Response({"error": "Something went wrong"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

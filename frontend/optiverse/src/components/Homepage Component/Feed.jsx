@@ -1,39 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { getAllPost } from "../../services/Api";
+// Feed.jsx
+import React from "react";
 import Post from "./Post";
 import PostCard from "./PostCard";
 
-const Feed = () => {
-  const [posts, setPosts] = useState([]);
-  const user = localStorage.getItem("user");
+const Feed = ({ posts, setPosts }) => {
+  const username = localStorage.getItem("username");
 
-  const fetchPosts = () => {
-    if (user) {
-      getAllPost(user)
-        .then((response) => {
-          setPosts(response.data);
-        })
-        .catch((error) => {
-          console.error("Failed to fetch posts:", error.response?.data || error.message);
-        });
-    }
+  const handlePostCreated = () => {
+    const user = localStorage.getItem("user");
+    import("../../services/Api").then(({ getAllPost }) => {
+      getAllPost(user).then((res) => setPosts(res.data));
+    });
   };
-
-  useEffect(() => {
-    fetchPosts();
-  }, [user]);
 
   return (
     <div className="space-y-4">
-      <PostCard onPostCreated={fetchPosts} />
-      {posts.map((post) => (
-        <Post
-          key={post.id}
-          community={`User ${post.user}`}
-          content={post.post}
-          time={new Date(post.date).toLocaleString()}
-        />
-      ))}
+      <PostCard onPostCreated={handlePostCreated} />
+
+      {posts.length === 0 ? (
+        <div className="text-center text-gray-400 text-lg mt-10">No posts found.</div>
+      ) : (
+        posts.map((post) => (
+          <Post
+            key={post.id}
+            community={username}
+            content={post.post}
+            time={new Date(post.date).toLocaleString()}
+          />
+        ))
+      )}
     </div>
   );
 };
