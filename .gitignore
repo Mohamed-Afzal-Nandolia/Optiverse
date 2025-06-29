@@ -17,6 +17,9 @@ target/
 .venv
 debug.log
 django-backend
+**/*.pyc
+*.pyc
+__pycache__/
 
 ### VS Code ###
 .vscode/
